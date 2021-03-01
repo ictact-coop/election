@@ -34,6 +34,7 @@ class RecommendationForm(forms.ModelForm):
     )
     signature = forms.FileField(
         label = '서명 이미지',
+        required = False,
         widget = forms.FileInput(attrs={
             'class': 'form-control',
         })
