@@ -6,7 +6,6 @@
 
 {% block head_add %}
   <link href="/static/css/literallycanvas.css" rel="stylesheet">
-  <link href="/static/css/defaults.css" rel="stylesheet">
 
   <!-- dependency: React.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
@@ -59,7 +58,7 @@
 {% block javascript_tail %}
   var lc = LC.init(
       document.getElementsByClassName('new_signature')[0],
-      {imageURLPrefix: '/static/img', imageSize: {width: 500, height: 300}}
+      {imageURLPrefix: '/static/img', imageSize: {width: 500, height: 250}}
   );
 
   $('#recommend').on('click', function() {
