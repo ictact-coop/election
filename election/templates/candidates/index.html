@@ -4,33 +4,68 @@
 임원 후보 추천
 {% endblock %}
 
+{% block head_add %}
+  <link href="/static/css/literallycanvas.css" rel="stylesheet">
+
+    <!-- dependency: React.js -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+
+    <!-- Literally Canvas -->
+    <script src="/static/js/literallycanvas-core.js"></script>
+{% endblock %}
+
 {% block content %}
-<form action="" class="task-form form-horizontal" method="post" enctype="multipart/form-data">
+<br>
+<h1 class="display-5">공동체IT 임원 후보 추천</h1>
+<br>
+{% if message %}
+<p class="text-success"><strong>{{ message }}</strong></p>
+{% endif %}
+<form id="recommendation_form" action="" class="form-horizontal" method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
   {% if form.errors %}
   <ol role="alertdialog">
       {% for error in form.errors %}
-      <li role="alert"><strong>{{ error|escape }}</strong></li>
+      <li role="alert"><strong>{{ error|escape }}</strong> 내용이 잘못 입력됐습니다</li>
       {% endfor %}
   </ol>
   {% endif %}
   <!-- {{ form.as_p|safe }} -->
   {% for field in form %}
-  <div class="form-group"> <!-- aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}> -->
-    <div class="col-sm-2">
-      <span class="pull-right">{{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}</span>
-    </div>
-    <div class="col-sm-10">
-      {{ field }}
-    </div>
+  <div class="mb-3 form-floating"> <!-- aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}> -->
+    <!-- <div class="col-sm-2"> -->
+    <!-- </div> -->
+    {{ field }}
+    <label for="id_{{ field.name }}">{{ field.label_tag }}</label>
     {% if field.help_text %}
-    <p class="help">{{ field.help_text|safe }}</p>
+    <p class="help-block">{{ field.help_text|safe }}</p>
     {% endif %}
+
   </div>
   {% endfor %}
+  <p>준비된 서명 이미지가 없으시면 아래에서 서명해주세요</p>
+  <div class="my-drawing"></div>
   <p>
-    <button type="submit" class="save btn btn-lg btn-primary">추천하기</button>
+    <button type="button" onclick="recommend()" class="save btn btn-lg btn-primary">추천하기</button>
   </p>
 </form>
+{% endblock %}
+
+{% block javascript_tail %}
+  var lc = LC.init(
+      document.getElementsByClassName('my-drawing')[0],
+      {imageURLPrefix: '/static/img'}
+  );
+
+  function recommend() {
+    var f = document.getElementById('recommendation_form');
+    <!-- e.preventDefault(); -->
+    <!-- var svgString = lc.getSVGString(); -->
+    <!-- alert(svgString); -->
+    <!-- window.open(lc.getImage().toDataURL()); -->
+    f.submit();
+  }
+
 {% endblock %}
