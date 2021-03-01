@@ -1,0 +1,36 @@
+{% extends "layouts/layout.html" %}
+
+{% block title %}
+임원 후보 추천
+{% endblock %}
+
+{% block content %}
+<form action="" class="task-form form-horizontal" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% if form.errors %}
+  <ol role="alertdialog">
+      {% for error in form.errors %}
+      <li role="alert"><strong>{{ error|escape }}</strong></li>
+      {% endfor %}
+  </ol>
+  {% endif %}
+  <!-- {{ form.as_p|safe }} -->
+  {% for field in form %}
+  <div class="form-group"> <!-- aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}> -->
+    <div class="col-sm-2">
+      <span class="pull-right">{{ field.label_tag }}{% if field.field.required %}<span class="required">*</span>{% endif %}</span>
+    </div>
+    <div class="col-sm-10">
+      {{ field }}
+    </div>
+    {% if field.help_text %}
+    <p class="help">{{ field.help_text|safe }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  <p>
+    <button type="submit" class="save btn btn-lg btn-primary">추천하기</button>
+  </p>
+</form>
+{% endblock %}

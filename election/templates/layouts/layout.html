@@ -1,0 +1,20 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body id="page-top">
+  <div class="container-content" id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  {% block javascript %}
+  {% endblock %}
+</body>
+
+</html>
