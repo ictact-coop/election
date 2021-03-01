@@ -24,7 +24,7 @@ def index(request):
                     filename = 'uploads/서명_' + recommendation.recommender + '.png'
                     # 헤더 부분 제거
                     image_data = image_data[22:]
-                    new_signature = open(filename, 'wb')
+                    new_signature = open(filename.encode('utf8'), 'wb')
                     new_signature.write(base64.b64decode(image_data))
                     new_signature.close()
                     recommendation.signature = filename
