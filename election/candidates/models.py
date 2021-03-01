@@ -13,8 +13,13 @@ class Recommendation(models.Model):
     reason = models.TextField(default='', null=False, blank=False)
     recommender = models.CharField(max_length=64, null=False, blank=False)
     contact = models.CharField(max_length=64, null=False, blank=False)
-    signature = models.FileField(blank=False, null=False, upload_to="%Y/%m")
+    signature = models.FileField(blank=False, null=False, upload_to="uploads/%Y/%m")
     created_at = models.DateTimeField(auto_now_add=True, null=False)
 
     def __str__(self):
         return self.candidate.candidate_name
+
+    def is_over(self):
+        if Recommendation.objects.filter(recommender = self.recommender).count() >= 3:
+            return True
+        return False
