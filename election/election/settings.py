@@ -25,7 +25,7 @@ SECRET_KEY = 'qt=8wsc-ldc_nlvnpls%9mc!i5%tds8@j$hcb4#%*vvpiqq4&j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['election.ictact.kr', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -119,8 +119,12 @@ USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+ROOT_DIR = os.path.dirname(BASE_DIR)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATIC_ROOT = os.path.join(ROOT_DIR, '.static_root')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/uploads/'

@@ -9,8 +9,8 @@
   <link href="/static/css/defaults.css" rel="stylesheet">
 
   <!-- dependency: React.js -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-with-addons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
 
   <!-- Literally Canvas -->
   <script src="/static/js/literallycanvas-core.js"></script>
@@ -51,7 +51,7 @@
   <div class="new_signature"></div>
   <input type="hidden" id="new_signature_img" name="new_signature_img" />
   <p>
-    <button type="submit" id="recommend" class="btn btn-lg btn-primary">추천2</button>
+    <button type="submit" id="recommend" class="btn btn-lg btn-primary">추천하기</button>
   </p>
 </form>
 {% endblock %}
@@ -62,18 +62,11 @@
       {imageURLPrefix: '/static/img', imageSize: {width: 500, height: 300}}
   );
 
-  var f = $('#recommendation_form')
-
   $('#recommend').on('click', function() {
-    var newImg = document.createElement('img');
-    newImg.src = lc.getImage().toDataURL();
-    if(newImg.src != '') {
-      $('#new_signature_img').val(newImg.src);
+    newImg_src = lc.getImage().toDataURL();
+    if(newImg_src != '') {
+      $('#new_signature_img').val(newImg_src);
     }
-    <!-- $('#id_signature').val(lc.getImage().toDataURL()); -->
-    <!-- var new_signature_img = lc.getImage(); -->
-    <!-- window.open(newImg); -->
-    <!-- alert($('#new_signature_img').val()); -->
   })
 
 {% endblock %}
