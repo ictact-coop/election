@@ -64,7 +64,8 @@
 
   $('#recommend').on('click', function() {
     newImg_src = lc.getImage().toDataURL();
-    if(newImg_src != '') {
+    var sign_uploaded = $('#id_signature').val();
+    if(!sign_uploaded && newImg_src != '') {
       $('#new_signature_img').val(newImg_src);
     }
   })
