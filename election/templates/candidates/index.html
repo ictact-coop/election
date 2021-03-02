@@ -51,7 +51,7 @@
   <input type="hidden" id="new_signature_img" name="new_signature_img" />
   <p>
     <button type="submit" id="recommend" class="btn btn-lg btn-primary">추천하기</button>
-    <button type="button" id="export_new_sign" class="btn btn-lg btn-secondary">즉석 서명 이미지 저장</button>
+    <a download="sign.png" id="export_new_sign" class="btn btn-lg btn-secondary">즉석 서명 이미지 저장</a>
   </p>
 </form>
 {% endblock %}
@@ -70,9 +70,6 @@
     }
   });
 
-  $('#export_new_sign').on('click', function(e) {
-    e.preventDefault();
-    window.open(lc.getImage().toDataURL());
-  });
+  document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
 
 {% endblock %}
