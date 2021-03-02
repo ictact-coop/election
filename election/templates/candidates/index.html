@@ -61,13 +61,49 @@
       document.getElementsByClassName('new_signature')[0],
       {imageURLPrefix: '/static/img', imageSize: {width: 500, height: 250}}
   );
+  var drawing_changed = false;
+  lc.on('drawingChange', function() {
+    drawing_changed = true;
+  });
 
   $('#recommend').on('click', function() {
+    var recommender = $('#id_recommender');
+    if(!checkSpecial(recommender.val())) {
+      alert('특수 문자는 허용되지 않습니다. 정확한 이름을 적어주세요');
+      recommender.select();
+      return false;
+    }
+
+    var contact = $('#id_contact');
+    var contact_value = contact.val();
+
+    if(!contact_value) {
+      alert('전화번호 입력하세요');
+      contact.focus();
+      return false;
+    } else {
+      if(!checkSpecial(contact_value)) {
+        alert('특수문자는 허용되지 않습니다');
+        contact.select();
+        return false;
+      }
+      if(!isPhone(contact_value) && !isMobile(contact_value)) {
+        alert('전화번호 형식에 맞지 않습니다. 9~11자의 숫자만 입력해주세요');
+        contact.select();
+        return false;
+      }
+    }
     newImg_src = lc.getImage().toDataURL();
     var sign_uploaded = $('#id_signature').val();
-    if(!sign_uploaded && newImg_src != '') {
-      $('#new_signature_img').val(newImg_src);
+    if(!sign_uploaded) {
+      if(drawing_changed) {
+        $('#new_signature_img').val(newImg_src);
+      } else {
+        alert('서명 이미지를 업로드하거나 즉석 서명을 해주세요');
+        return false;
+      }
     }
+    if(!confirm($('#id_candidate option:selected').text() + '님을 추천하겠습니까?')) return false;
   });
 
   document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
