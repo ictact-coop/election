@@ -61,6 +61,7 @@ class RegistrationForm(forms.ModelForm):
     )
     career2 = forms.CharField(
         label = '경력',
+        required = False,
         widget = forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': '추가로 공유할 경력을 적어주세요'

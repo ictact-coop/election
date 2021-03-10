@@ -69,6 +69,21 @@
 
 </table>
 {% endif %}
+<p>
+  공동체IT사회적협동조합 제3기 임원 선거 후보 등록기간입니다. 아래 관련근거를 확인하시고 피선거권이 있는 조합원께서는 임원으로서 조합 운영과 발전에 기여해주시기 바랍니다.
+  피선거권 여부에 대한 자세한 문의는 조합 선거관리위원회에 문의해주세요
+  <ul class="list-unstyled">
+    <li>후보 등록 기간: 2021.3.10 ~ 3.13</li>
+    <li>
+      관련 근거
+      <ul>
+        <li><a href="https://docs.ictact.kr/docs/constitution/#%EC%A0%9C5%EC%9E%A5-%EC%9E%84%EC%9B%90%EA%B3%BC-%EC%A7%81%EC%9B%90">정관 제5장 임원과 직원</a></li>
+        <li><a href="https://docs.ictact.kr/docs/code-of-elections/#%EC%A0%9C10%EC%A1%B0%ED%9B%84%EB%B3%B4%EC%9E%90-%EB%93%B1%EB%A1%9D">선거관리규약 제10조 후보자 등록</a></li>
+      </ul>
+    </li>
+  </ul>
+
+</p>
 <form id="recommendation_form" action="" class="form-horizontal" method="post" enctype="multipart/form-data">
   {% csrf_token %}
 
@@ -116,6 +131,8 @@
     drawing_changed = true;
   });
 
+  document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
+
   $('#button_register').on('click', function() {
     var candidate_name = $('#id_candidate_name');
     if(!checkSpecial(candidate_name.val())) {
@@ -148,6 +165,7 @@
     if(!sign_uploaded) {
       if(drawing_changed) {
         $('#new_signature_img').val(newImg_src);
+        document.querySelectorAll("a#export_new_sign")[0].click();
       } else {
         alert('서명 이미지를 업로드하거나 즉석 서명을 해주세요');
         return false;
@@ -155,7 +173,5 @@
     }
     if(!confirm('임원 후보 등록을 신청하겠습니까?')) return false;
   });
-
-  document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
 
 {% endblock %}

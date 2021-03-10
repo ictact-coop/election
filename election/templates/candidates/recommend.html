@@ -39,9 +39,12 @@
     </table>
     <p>
       공동체IT 제3기 임원 후보는 조합원 3인 이상의 추천을 받아야 합니다. <br>
+      추천인 이름이 잘못 쓰여진 경우 등 부적합한 추천은 선관위의 확인으로 무효 처리 될 수 있습니다
+      <br>
       후보 등록과 추천에 많은 참여를 부탁드립니다</p>
   </div>
-  <div class="col-sm-9">
+  <div class="col-sm-1"></div>
+  <div class="col-sm-8">
     {% if message %}
     <p class="text-success"><strong>{{ message }}</strong></p>
     {% endif %}
@@ -93,6 +96,8 @@
     drawing_changed = true;
   });
 
+  document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
+
   $('#recommend').on('click', function() {
     var recommender = $('#id_recommender');
     if(!checkSpecial(recommender.val())) {
@@ -125,14 +130,16 @@
     if(!sign_uploaded) {
       if(drawing_changed) {
         $('#new_signature_img').val(newImg_src);
+        document.querySelectorAll("a#export_new_sign")[0].click();
       } else {
         alert('서명 이미지를 업로드하거나 즉석 서명을 해주세요');
         return false;
       }
     }
-    if(!confirm($('#id_candidate option:selected').text() + '님을 추천하겠습니까?')) return false;
-  });
 
-  document.querySelector('a#export_new_sign').addEventListener('click', event => event.target.href = lc.getImage().toDataURL());
+    if(!confirm($('#id_candidate option:selected').text() + '님을 추천하겠습니까?')) {
+      return false;
+    }
+  });
 
 {% endblock %}
