@@ -23,13 +23,24 @@ class RegistrationForm(forms.ModelForm):
             'placeholder': '주소를 적어주세요'
         })
     )
-    type = forms.CharField(
+
+    C_type = (('이사', '이사'), ('사업감사', '사업감사'), ('회계감사', '회계감사'))
+    type = forms.ChoiceField(
+        choices = C_type,
+        required = True,
         label = '임원 유형',
-        widget = forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': '이사 혹은 감사를 적어주세요. 감사는 사업감사와 회계감사가 있습니다'
+        widget = forms.Select(attrs={
+            'class': 'form-control'
         })
     )
+
+    # type = forms.CharField(
+    #     label = '임원 유형',
+    #     widget = forms.TextInput(attrs={
+    #         'class': 'form-control',
+    #         'placeholder': '이사 혹은 감사를 적어주세요. 감사는 사업감사와 회계감사가 있습니다'
+    #     })
+    # )
     pledge = forms.CharField(
         label = '출마의 변(공약)',
         widget = forms.Textarea(attrs={

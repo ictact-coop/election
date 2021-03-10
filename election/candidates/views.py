@@ -38,7 +38,7 @@ def register(request):
                         new_signature.close()
                         registration.signature = real_filename
                 registration.save()
-                message = registration.candidate_name + '님의 임원 후보 등록 신청이 접수되었습니다. 조합원 3명 이상의 추천을 모아주시면 선관위에서 확인 후 공식 후보로 등록됩니다.'
+                message = registration.candidate_name + '님의 임원 후보 등록 신청이 접수되었습니다. 조합원 3명 이상의 추천을 모아주시면 선관위에서 확인 후 공식 후보로 확정됩니다.'
                 registration_result = registration
             form = RegistrationForm()
 
