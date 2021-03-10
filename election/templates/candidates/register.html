@@ -58,11 +58,10 @@
     <td colspan="2" class="text-center">
       본인은 공동체IT사회적협동조합 {{registration_result.type}}로 입후보 하고자 등록합니다.
       <br>
-      {% now "Y. m. d."  %}
+      {% created_at|date:"Y. m. d."  %}
       <br>
       <span class="display-6">후보자 {{registration_result.candidate_name}}</span>
-      <img src="{{registration_result.signature}}" alt="">
-      {{registration_result.signature}}
+      <img src="{{registration_result.signature.url}}" alt="서명">
       <br>
       <!-- <span class="display-6">선거관리위원장 귀하</span> -->
     </td>

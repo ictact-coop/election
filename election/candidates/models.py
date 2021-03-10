@@ -33,3 +33,14 @@ class Recommendation(models.Model):
         if Recommendation.objects.filter(recommender = self.recommender).count() >= 3:
             return True
         return False
+
+    def is_exists(self):
+        if Recommendation.objects.filter(recommender = self.recommender, candidate=self.candidate).exists():
+            return True
+        return False
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Call the "real" save() method.
+        candidate = self.candidate
+        candidate.recommendation_count += 1
+        candidate.save()

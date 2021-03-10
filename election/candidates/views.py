@@ -36,11 +36,11 @@ def register(request):
                         new_signature = open(real_filename, 'wb')
                         new_signature.write(base64.b64decode(image_data))
                         new_signature.close()
-                        registration.signature = getattr(settings, 'MEDIA_URL', None) + filename
+                        registration.signature = real_filename
                 registration.save()
                 message = registration.candidate_name + '님의 임원 후보 등록 신청이 접수되었습니다. 조합원 3명 이상의 추천을 모아주시면 선관위에서 확인 후 공식 후보로 등록됩니다.'
+                registration_result = registration
             form = RegistrationForm()
-            registration_result = registration
 
         else:
             message = '후보 등록 신청에 실패했습니다. 다시 확인해주세요'
@@ -62,6 +62,8 @@ def recommend(request):
             # 추천 제한 수를 넘었는지 확인
             if recommendation.is_over():
                 message = recommendation.recommender + '님의 추천가능수를 초과했습니다. 앞의 추천을 변경하시려면 선관위에 문의해주세요'
+            elif recommendation.is_exists():
+                message = recommendation.recommender + '님은 ' + recommendation.candidate.candidate_name + ' 후보를 이미 추천하셨습니다. 앞의 추천을 변경하시려면 선관위에 문의해주세요'
             else:
                 recommendation.created_at = timezone.now()
                 # 즉석 서명 이미지가 있으면 저장하고 이번 추천의 서명으로 등록
@@ -86,7 +88,9 @@ def recommend(request):
     else:
         form = RecommendationForm()
 
-    context = { 'form': form, 'message': message }
+    candidates = Candidate.objects.all
+
+    context = { 'form': form, 'message': message, 'candidates': candidates }
 
     return render(request, 'candidates/recommend.html', context)
 
