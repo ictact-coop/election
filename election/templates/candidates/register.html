@@ -165,6 +165,7 @@
     if(!sign_uploaded) {
       if(drawing_changed) {
         $('#new_signature_img').val(newImg_src);
+        $('#id_signature').val(newImg_src);
         <!-- document.querySelectorAll("a#export_new_sign")[0].click(); -->
       } else {
         alert('서명 이미지를 업로드하거나 즉석 서명을 해주세요');

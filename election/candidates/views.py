@@ -6,6 +6,7 @@ from .models import Recommendation, Candidate
 from .forms import RecommendationForm, RegistrationForm
 from django.conf import settings
 import base64
+from django.core.files.base import ContentFile
 
 def index(request):
     # return render(request, 'candidates/index.html')
@@ -28,15 +29,19 @@ def register(request):
                 image_data = request.POST.get('new_signature_img', '')
                 if not registration.signature:
                     if image_data != '':
-                        filepath = getattr(settings, 'MEDIA_ROOT', None)
-                        filename = 'new_sign_' + registration.candidate_name + '.png'
-                        real_filename = filepath + '/' + filename
-                        # 헤더 부분 제거
-                        image_data = image_data[22:]
-                        new_signature = open(real_filename, 'wb')
-                        new_signature.write(base64.b64decode(image_data))
-                        new_signature.close()
-                        registration.signature = real_filename
+                        format, imgstr = image_data.split(';base64,')
+                        ext = format.split('/')[-1]
+                        data = ContentFile(base64.b64decode(imgstr), name=registration.candidate_name + '.' + ext)
+                        registration.signature = data
+                        # filepath = getattr(settings, 'MEDIA_ROOT', None)
+                        # filename = 'new_sign_' + registration.candidate_name + '.png'
+                        # real_filename = filepath + '/' + filename
+                        # # 헤더 부분 제거
+                        # image_data = image_data[22:]
+                        # new_signature = open(real_filename, 'wb')
+                        # new_signature.write(base64.b64decode(image_data))
+                        # new_signature.close()
+                        # registration.signature = real_filename
                 registration.save()
                 message = registration.candidate_name + '님의 임원 후보 등록 신청이 접수되었습니다. 조합원 3명 이상의 추천을 모아주시면 선관위에서 확인 후 공식 후보로 확정됩니다.'
                 registration_result = registration
@@ -70,14 +75,18 @@ def recommend(request):
                 image_data = request.POST.get('new_signature_img', '')
                 if not recommendation.signature:
                     if image_data != '':
-                        filepath = getattr(settings, 'MEDIA_ROOT', None)
-                        filename = filepath + '/' + 'new_sign_' + recommendation.recommender + '.png'
-                        # 헤더 부분 제거
-                        image_data = image_data[22:]
-                        new_signature = open(filename, 'wb')
-                        new_signature.write(base64.b64decode(image_data))
-                        new_signature.close()
-                        recommendation.signature = filename
+                        format, imgstr = image_data.split(';base64,')
+                        ext = format.split('/')[-1]
+                        data = ContentFile(base64.b64decode(imgstr), name=recommendation.candidate + '.' + ext)
+                        recommendation.signature = data
+                        # filepath = getattr(settings, 'MEDIA_ROOT', None)
+                        # filename = filepath + '/' + 'new_sign_' + recommendation.recommender + '.png'
+                        # # 헤더 부분 제거
+                        # image_data = image_data[22:]
+                        # new_signature = open(filename, 'wb')
+                        # new_signature.write(base64.b64decode(image_data))
+                        # new_signature.close()
+                        # recommendation.signature = filename
                 recommendation.save()
                 message = recommendation.candidate.candidate_name + '님이 추천되었습니다.'
 
