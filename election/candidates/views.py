@@ -77,7 +77,7 @@ def recommend(request):
                     if image_data != '':
                         format, imgstr = image_data.split(';base64,')
                         ext = format.split('/')[-1]
-                        data = ContentFile(base64.b64decode(imgstr), name=recommendation.candidate + '.' + ext)
+                        data = ContentFile(base64.b64decode(imgstr), name=recommendation.candidate.candidate_name + '.' + ext)
                         recommendation.signature = data
                         # filepath = getattr(settings, 'MEDIA_ROOT', None)
                         # filename = filepath + '/' + 'new_sign_' + recommendation.recommender + '.png'
