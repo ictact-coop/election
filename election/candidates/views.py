@@ -8,6 +8,7 @@ from .forms import RecommendationForm, RegistrationForm
 from django.conf import settings
 import base64
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     # return render(request, 'candidates/index.html')
@@ -104,6 +105,7 @@ def recommend(request):
 
     return render(request, 'candidates/recommend.html', context)
 
+@login_required
 def commission(request):
     candidates = Candidate.objects.all
     context = { 'candidates': candidates }

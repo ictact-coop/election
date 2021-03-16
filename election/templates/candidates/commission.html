@@ -43,7 +43,7 @@
       {{ created_at|date:"Y. m. d." }}
       <br>
       <span class="display-6">후보자 {{candidate.candidate_name}}</span>
-      <img src="{{candidate.signature.url}}" alt="서명">
+      <img src="{{candidate.signature.url}}" width="300px" alt="서명">
       <br>
       <!-- <span class="display-6">선거관리위원장 귀하</span> -->
     </td>
@@ -73,7 +73,7 @@
       <td>이름</td><td>{{recommendation.recommender}}</td>
     </tr>
     <tr>
-      <td>서명</td><td><img src="{{recommendation.signature.image.url}}" alt="{{recommendation.signature}}"></td>
+      <td>서명</td><td><img src="{{recommendation.signature.image.url}}" width="300px" alt="{{recommendation.signature}}"></td>
     </tr>
     <tr>
       <td colspan="3" class="text-center">{{recommendation.created_at}}</td>
