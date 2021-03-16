@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
+from django.core.paginator import Paginator
 from .models import Recommendation, Candidate
 from .forms import RecommendationForm, RegistrationForm
 from django.conf import settings
@@ -102,6 +103,11 @@ def recommend(request):
     context = { 'form': form, 'message': message, 'candidates': candidates }
 
     return render(request, 'candidates/recommend.html', context)
+
+def commission(request):
+    candidates = Candidate.objects.all
+    context = { 'candidates': candidates }
+    return render(request, 'candidates/commission.html', context)
 
 def create_signature(request):
     if request.method == 'POST':

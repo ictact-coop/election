@@ -10,4 +10,5 @@ urlpatterns = [
     path('register', views.register, name='register'),
     # path('recommendations', views.recommendations, name='recommendations'),
     path('recommend', views.recommend, name='recommend'),
+    path('commission', views.commission, name='commission'),
 ]
