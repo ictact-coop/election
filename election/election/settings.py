@@ -25,7 +25,7 @@ SECRET_KEY = 'qt=8wsc-ldc_nlvnpls%9mc!i5%tds8@j$hcb4#%*vvpiqq4&j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['election.ictact.kr', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['election.ictact.kr', 'el.ictact.kr', 'localhost', '127.0.0.1']
 
 
 # Application definition
