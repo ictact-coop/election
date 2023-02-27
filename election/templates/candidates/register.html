@@ -68,7 +68,7 @@
   </tr>
 
 </table>
-{% endif %}
+{% else %}
 <p>
   공동체IT사회적협동조합 제4기 임원 선거 후보 등록기간입니다. 아래 관련근거를 확인하시고 피선거권이 있는 조합원께서는 임원으로서 조합 운영과 발전에 기여해주시기 바랍니다.
   피선거권 여부에 대한 자세한 문의는 조합 선거관리위원회에 문의해주세요
@@ -119,6 +119,7 @@
     <a download="sign.png" id="export_new_sign" class="btn btn-lg btn-secondary">즉석 서명 이미지 저장</a>
   </p>
 </form>
+{% endif %}
 {% endblock %}
 
 {% block javascript_tail %}
