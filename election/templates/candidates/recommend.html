@@ -18,72 +18,80 @@
 
 {% block content %}
 <br>
-<h1 class="display-5">공동체IT 임원 후보 추천</h1>
+<h1 class="display-5">공동체IT 4기 임원 후보 추천</h1>
 <br>
 <div class="container row">
-  <div class="col-sm-5">
-    <p class="lead">후보 등록/추천 현황</p>
-    <table class="table table-bordered table-striped">
-      <tr>
-        <th>후보</th><th>유형</th><th>추천수</th>
-      </tr>
-      {% for candidate in candidates %}
-      <tr>
-        <td rowspan="2">{{ candidate }}</td><td>{{ candidate.type }}</td><td>{{ candidate.recommendation_count }}</td>
-      </tr>
-      <tr>
-        <td colspan="2">{{ candidate.pledge }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="3">아직 등록한 후보자가 없습니다</td>
-      </tr>
-      {% endfor %}
-    </table>
-    <p>
-      공동체IT 제4기 임원 후보는 조합원 3인 이상의 추천을 받아야 합니다. <br>
-      추천인 이름이 잘못 쓰여진 경우 등 부적합한 추천은 선관위의 확인으로 무효 처리 될 수 있습니다
-      <br>
-      후보 등록과 추천에 많은 참여를 부탁드립니다</p>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-header">
+        후보 등록/추천 현황
+      </div>
+      <ul class="list-group">
+        {% for candidate in candidates %}
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">{{ candidate }} <small>{{ candidate.type }}</small></div>
+            {{ candidate.pledge }}
+          </div>
+          <span class="badge bg-primary rounded-pill">{{ candidate.recommendation_count }}</span>
+        </li>
+        {% empty %}
+        아직 등록한 후보자가 없습니다
+        {% endfor %}
+      </ul>
+    </div>
   </div>
-  <div class="col-sm-1"></div>
+
   <div class="col-sm-6">
     {% if message %}
     <p class="text-success"><strong>{{ message }}</strong></p>
     {% endif %}
-    <p class="lead">후보 추천서 작성 <small>(최대 3명까지 추천하실 수 있습니다)</small></p>
+    <div class="card border-secondary mb-3">
+      <div class="card-header">
+        공동체IT 제4기 임원 후보는 조합원 3인 이상의 추천을 받아야 합니다. <br>
+        추천인 이름이 잘못 쓰여진 경우 등 부적합한 추천은 선관위의 확인으로 무효 처리 될 수 있습니다
+        <br>
+        후보 등록과 추천에 많은 참여를 부탁드립니다
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">후보 추천서 작성 <small>(최대 3명까지 추천하실 수 있습니다)</small></h5>
+        <p class="card-text">
+          <form id="recommendation_form" action="" class="form-horizontal" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-    <form id="recommendation_form" action="" class="form-horizontal" method="post" enctype="multipart/form-data">
-      {% csrf_token %}
+            {% if form.errors %}
+            <ol role="alertdialog">
+                {% for error in form.errors %}
+                <li role="alert"><strong>{{ error|escape }}</strong> 내용이 잘못 입력됐습니다</li>
+                {% endfor %}
+            </ol>
+            {% endif %}
+            <!-- {{ form.as_p|safe }} -->
+            {% for field in form %}
+            <div class="mb-3 form-floating"> <!-- aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}> -->
+              <!-- <div class="col-sm-2"> -->
+              <!-- </div> -->
+              {{ field }}
+              <label for="id_{{ field.name }}">{{ field.label_tag }}</label>
+              {% if field.help_text %}
+              <p class="help-block">{{ field.help_text|safe }}</p>
+              {% endif %}
 
-      {% if form.errors %}
-      <ol role="alertdialog">
-          {% for error in form.errors %}
-          <li role="alert"><strong>{{ error|escape }}</strong> 내용이 잘못 입력됐습니다</li>
-          {% endfor %}
-      </ol>
-      {% endif %}
-      <!-- {{ form.as_p|safe }} -->
-      {% for field in form %}
-      <div class="mb-3 form-floating"> <!-- aria-required={% if field.field.required %}"true"{% else %}"false"{% endif %}> -->
-        <!-- <div class="col-sm-2"> -->
-        <!-- </div> -->
-        {{ field }}
-        <label for="id_{{ field.name }}">{{ field.label_tag }}</label>
-        {% if field.help_text %}
-        <p class="help-block">{{ field.help_text|safe }}</p>
-        {% endif %}
+            </div>
+            {% endfor %}
+            <p>준비된 서명 이미지가 없으시면 아래에서 서명해주세요</p>
+            <div class="new_signature"></div>
+            <input type="hidden" id="new_signature_img" name="new_signature_img" />
+            <p>
+              <button type="submit" id="recommend" class="btn btn-lg btn-primary">추천하기</button>
+              <a download="sign.png" id="export_new_sign" class="btn btn-lg btn-secondary">즉석 서명 이미지 저장</a>
+            </p>
+          </form>
+        </p>
 
       </div>
-      {% endfor %}
-      <p>준비된 서명 이미지가 없으시면 아래에서 서명해주세요</p>
-      <div class="new_signature"></div>
-      <input type="hidden" id="new_signature_img" name="new_signature_img" />
-      <p>
-        <button type="submit" id="recommend" class="btn btn-lg btn-primary">추천하기</button>
-        <a download="sign.png" id="export_new_sign" class="btn btn-lg btn-secondary">즉석 서명 이미지 저장</a>
-      </p>
-    </form>
+    </div>
+
   </div>
 
 </div>
