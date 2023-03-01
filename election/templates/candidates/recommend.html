@@ -22,40 +22,63 @@
 <br>
 <div class="container row">
   <div class="col-sm-6 mb-10">
-    <div class="card">
-      <div class="card-header">
-        후보 등록/추천 현황
-      </div>
-      <ul class="list-group">
-        {% for candidate in candidates %}
-        <li class="list-group-item d-flex justify-content-between align-items-start">
-          <div class="ms-2 me-auto">
+    <h2>후보 등록/추천 현황 <span class="badge bg-primary rounded-pill">{{ candidates.count }}</span></h2>
+    <p>후보 이름을 눌러 출마의 뜻과 추천인의 메시지를 확인해보세요</p>
+
+    <div class="accordion" id="accordionExample">
+      {% for candidate in candidates %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_{{candidate}}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{candidate}}" aria-expanded="true" aria-controls="collapse_{{candidate}}">
             <div class="fw-bold">{{ candidate }} <small>{{ candidate.type }}</small></div>
-            {{ candidate.pledge }}
+          </button>
+        </h2>
+        <div id="collapse_{{candidate}}" class="accordion-collapse collapse" aria-labelledby="heading_{{candidate}}" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <p class="lead">
+              {{ candidate.pledge }}
+            </p>
+
+            {% if candidate.recommendation_set.count > 0 %}
+              <h3>후보 추천인 <span class="badge {% if candidate.recommendation_count >= 3 %}bg-success{% else %}bg-warning{% endif %} rounded-pill">{{ candidate.recommendation_count }}</span></h3>
+              {% for recommendation in candidate.recommendation_set.all %}
+              <ul class="list-group">
+                <li class="list-group-item">
+                  {{recommendation.reason}} / {{recommendation.recommender}}
+                </li>
+              </ul>
+              {% endfor %}
+            {% else %}
+              <h3>후보 추천인 <span class="badge bg-danger rounded-pill">0</span></h3>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  아직 추천을 받지 못했습니다. 조합원들의 추천을 기다립니다.
+                </li>
+              </ul>
+
+            {% endif %}
           </div>
-          <span class="badge bg-primary rounded-pill">{{ candidate.recommendation_count }}</span>
-        </li>
-        {% empty %}
-        아직 등록한 후보자가 없습니다
-        {% endfor %}
-      </ul>
+        </div>
+      </div>
+      {% endfor %}
     </div>
-    <br>
   </div>
 
   <div class="col-sm-6">
+    <h2>등록한 후보를 추천해주세요</h2>
+    <p>모든 후보는 최소 3명 이상의 추천을 얻어야 후보로 확정됩니다. 조합 발전을 위해 기여할 뜻을 밝혀주신 분들을 응원하는 의미로 적극 추천을 부탁드립니다! 감사합니다.</p>
     {% if message %}
     <p class="text-success"><strong>{{ message }}</strong></p>
     {% endif %}
     <div class="card border-secondary mb-3">
       <div class="card-header">
-        공동체IT 제4기 임원 후보는 조합원 3인 이상의 추천을 받아야 합니다. <br>
-        추천인 이름이 잘못 쓰여진 경우 등 부적합한 추천은 선관위의 확인으로 무효 처리 될 수 있습니다
-        <br>
-        후보 등록과 추천에 많은 참여를 부탁드립니다
+        <h3 class="card-title">후보 추천서 작성</h3>
+        <div class="alert alert-info" role="alert">
+          모든 조합원은 최대 3명의 후보까지 추천하실 수 있습니다 <br>
+          추천인 이름이 잘못 쓰여진 경우 등 부적합한 추천은 선관위의 확인으로 무효 처리 될 수 있습니다
+        </div>
       </div>
       <div class="card-body">
-        <h5 class="card-title">후보 추천서 작성 <small>(최대 3명까지 추천하실 수 있습니다)</small></h5>
         <p class="card-text">
           <form id="recommendation_form" action="" class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
