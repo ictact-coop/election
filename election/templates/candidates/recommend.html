@@ -30,7 +30,12 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading_{{candidate}}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{candidate}}" aria-expanded="true" aria-controls="collapse_{{candidate}}">
-            <div class="fw-bold">{{ candidate }} <small>{{ candidate.type }}</small></div>
+            <div class="fw-bold">
+              <span class="badge {% if candidate.recommendation_count >= 3 %}bg-success{% elif candidate.recommendation_count > 0 %}bg-warning{% else %}bg-danger{% endif %} rounded-pill">{{ candidate.recommendation_count }}</span>
+              {{ candidate }}<small>{{ candidate.type }}</small>
+              {% if candidate.recommendation_count >= 3 %}<span class="badge bg-success">후보 확정</span>{% endif %}
+            </div>
+
           </button>
         </h2>
         <div id="collapse_{{candidate}}" class="accordion-collapse collapse" aria-labelledby="heading_{{candidate}}" data-bs-parent="#accordionExample">
@@ -40,7 +45,7 @@
             </p>
 
             {% if candidate.recommendation_set.count > 0 %}
-              <h3>후보 추천인 <span class="badge {% if candidate.recommendation_count >= 3 %}bg-success{% else %}bg-warning{% endif %} rounded-pill">{{ candidate.recommendation_count }}</span></h3>
+              <h3>후보 추천 메시지</h3>
               {% for recommendation in candidate.recommendation_set.all %}
               <ul class="list-group">
                 <li class="list-group-item">
